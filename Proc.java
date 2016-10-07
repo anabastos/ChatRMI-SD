@@ -9,16 +9,15 @@ import java.rmi.server.*;
 public class Proc
 {
 	public static void main(String args[]) throws RemoteException{
-		int num1, num2, idCliente;
+		int idCliente;
 		char oper;
 		double resultado;
 		String msgDigitada;
 
 		try {
-			System.setSecurityManager(new RMISecurityManager());
 			Proc cliente = new Proc();
 			Naming.rebind("cliente", cliente);
-
+			System.setSecurityManager(new RMISecurityManager());
 			remote referenciaRemota = Naming.lookup("servidor");
 			InterfaceServidor a = (InterfaceServidor) referenciaRemota;
 
@@ -38,7 +37,7 @@ public class Proc
 			System.out.println(a.liberaConexao(idCliente));
 			System.exit(1);
 		} catch (Exception e){
-			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 	}
 }
