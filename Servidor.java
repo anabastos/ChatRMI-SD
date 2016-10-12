@@ -5,17 +5,16 @@ Guilherme Lanza
 */
 import java.rmi.*;
 import java.rmi.server.*;
+import java.util.*;
 
 public class Servidor
 {
-	public static void main (String args[]) throws RemoteException{
-
+	public static void main (String[] argv) throws RemoteException{
+        Servidor servidor = new Servidor();
 		try {
-			System.out.println
-				("Construindo Implementacoes do Servidor...");
 			System.setSecurityManager(new RMISecurityManager());
-			Servidor servidor = new Servidor();
-			Naming.rebind("servidor", servidor);
+			
+			Naming.rebind("servidor", new Servidor());
 			System.out.println("Servidor Iniciado!");
 
 		} catch (Exception e){

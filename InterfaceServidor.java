@@ -8,10 +8,8 @@ import java.rmi.server.*;
 
 public interface InterfaceServidor extends Remote {
 
-	int estabeleceConexao() throws RemoteException;
-
-	String liberaConexao(int _idCliente);
-
-	void sendToAll(String _msgm, int _idCliente, String _nome);
+	public int estabeleceConexao() throws RemoteException;
+	public String liberaConexao(int _idCliente) throws RemoteException;
+	public void sendToAll(String _msgm, int _idCliente, String _nome) throws RemoteException;
 
 }

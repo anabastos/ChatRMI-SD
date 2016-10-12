@@ -3,11 +3,13 @@ import java.rmi.server.*;
 
 public class InterfaceServidorImpl extends UnicastRemoteObject implements InterfaceServidor
 { 
-	public int estabeleceConexao() throws RemoteException{
-		idCliente ++;
+	public int idCliente = 0;
+	InterfaceProc[] clientes = new InterfaceProc[idCliente];
 
+	public int estabeleceConexao() throws RemoteException{
 		try {
-			clientesConectados[idCliente] = (InterfaceProc) Naming.lookup("cliente");
+			idCliente ++;
+			clientes[idCliente] = (InterfaceProc) Naming.lookup("cliente");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -17,21 +19,21 @@ public class InterfaceServidorImpl extends UnicastRemoteObject implements Interf
 	}
 
 	public String liberaConexao(int _idCliente) {
-
-		for (int i = 0; i < clientesConectados.length; i++){
+		//exclui cliente inativo
+		for (int i = 0; i < clientes.length; i++){
 			if (i == _idCliente) {
-				clientesConectados[idCliente] = null;
+				clientes[idCliente] = null;
 			}
 		}
 		idCliente --;
-		//exclui cliente inativo
+		
 		return "*~Conexao OK!~*";
 	}
 
 	public void sendToAll(String _msgm, int _idCliente, String _nome) {
-		for (int i = 0; i < clientesConectados.length; i++){
-			if ((clientesConectados[i] != null) && (i != _idCliente)) {
-				clientesConectados[i].atribuiMensagem(_nome + ":" + _msgm);
+		for (int i = 0; i < clientes.length; i++){
+			if ((clientes[i] != null) && (i != _idCliente)) {
+				clientes[i].atribuiMensagem(_nome + ":" + _msgm);
 			}
 		}
 	}
