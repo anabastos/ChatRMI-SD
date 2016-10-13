@@ -10,11 +10,11 @@ import java.util.*;
 public class Servidor
 {
 	public static void main (String[] argv) throws RemoteException{
-        Servidor servidor = new Servidor();
+        InterfaceServidorImpl servidor = new InterfaceServidorImpl();
 		try {
 			System.setSecurityManager(new RMISecurityManager());
 			
-			Naming.rebind("servidor", new Servidor());
+			Naming.rebind("servidor", servidor);
 			System.out.println("Servidor Iniciado!");
 
 		} catch (Exception e){

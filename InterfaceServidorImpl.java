@@ -4,11 +4,11 @@ import java.rmi.server.*;
 public class InterfaceServidorImpl extends UnicastRemoteObject implements InterfaceServidor
 { 
 	public int idCliente = 0;
-	InterfaceProc[] clientes = new InterfaceProc[idCliente];
+	private InterfaceProc[] clientes = new InterfaceProc[idCliente];
 
 	public int estabeleceConexao() throws RemoteException{
 		try {
-			idCliente ++;
+			idCliente =+ 1;
 			clientes[idCliente] = (InterfaceProc) Naming.lookup("cliente");
 
 		} catch (Exception e) {
@@ -18,22 +18,22 @@ public class InterfaceServidorImpl extends UnicastRemoteObject implements Interf
 		return idCliente;
 	}
 
-	public String liberaConexao(int _idCliente) {
+	public String liberaConexao(int _idCliente) throws RemoteException {
 		//exclui cliente inativo
 		for (int i = 0; i < clientes.length; i++){
 			if (i == _idCliente) {
 				clientes[idCliente] = null;
 			}
 		}
-		idCliente --;
+		idCliente -= 1;
 		
-		return "*~Conexao OK!~*";
+		return "OK";
 	}
 
-	public void sendToAll(String _msgm, int _idCliente, String _nome) {
+	public void sendToAll(String _msgm, int _idCliente, String _nome) throws RemoteException {
 		for (int i = 0; i < clientes.length; i++){
-			if ((clientes[i] != null) && (i != _idCliente)) {
-				clientes[i].atribuiMensagem(_nome + ":" + _msgm);
+			if ((i != _idCliente) && (clientes[i] != null) ) {
+				clientes[i].atribuiMensagem(_nome + " : " + _msgm);
 			}
 		}
 	}

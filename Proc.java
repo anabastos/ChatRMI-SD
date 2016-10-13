@@ -6,22 +6,23 @@ Guilherme Lanza
 import java.rmi.*;
 import java.rmi.server.*;
 import java.io.*;
+import java.security.*;
 //import java.util.*;
 
 public class Proc
 {
-	public static void main(String[] argv) throws RemoteException{
-
+	public static void main(String arg[]){
+		System.setProperty("java.security.policy", "client.policy");
+		System.setSecurityManager(new RMISecurityManager());
 		int idCliente;
 		String msgDigitada;
-		Proc cliente = new Proc();
 		try {
-			
+			InterfaceProcImpl cliente = new InterfaceProcImpl();
 			Naming.rebind("cliente", cliente);
-			System.setSecurityManager(new RMISecurityManager());
-			InterfaceServidor a = (InterfaceServidor) Naming.lookup("servidor");
-			System.out.println(a);
-			idCliente = a.estabeleConexao();
+			
+			Remote referenciaRemota = Naming.lookup("servidor");
+			InterfaceServidorImpl a = (InterfaceServidorImpl) referenciaRemota;
+			idCliente = a.estabeleceConexao();
 			System.out.println("Id Cliente:" + idCliente);
 
 			BufferedReader msg = new BufferedReader (new InputStreamReader(System.in)); 
