@@ -7,6 +7,7 @@ import java.rmi.*;
 import java.rmi.server.*;
 import java.util.*;
 import java.rmi.registry.*;
+import java.security.*;
 
 public class Servidor
 {

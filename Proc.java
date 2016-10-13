@@ -7,7 +7,6 @@ import java.rmi.*;
 import java.rmi.server.*;
 import java.io.*;
 import java.security.*;
-//import java.util.*;
 
 public class Proc
 {
@@ -17,24 +16,24 @@ public class Proc
 		String msgDigitada;
 		try {
 			InterfaceProcImpl cliente = new InterfaceProcImpl();
-			Naming.rebind("cliente", cliente);
+			Naming.rebind("rmi://localhost:2000/cliente", cliente);
 			
 			Remote referenciaRemota = Naming.lookup("rmi://localhost:2000/servidor");
-			InterfaceServidorImpl a = (InterfaceServidorImpl) referenciaRemota;
-			idCliente = a.estabeleceConexao();
-			System.out.println("Id Cliente:" + idCliente);
+			InterfaceServidorImpl server = (InterfaceServidorImpl) referenciaRemota;
+			idCliente = server.estabeleceConexao();
 
 			BufferedReader msg = new BufferedReader (new InputStreamReader(System.in)); 
 
 			System.out.print("Digite seu Nick! :");
 			String nome = msg.readLine();
+			
 			msgDigitada = msg.readLine();
 			while (msgDigitada.compareTo("end") != 0) {
-				a.sendToAll(msgDigitada, idCliente, nome);
+				server.sendToAll(msgDigitada, idCliente, nome);
 				msgDigitada = msg.readLine();
 			}
 
-			System.out.println(a.liberaConexao(idCliente));
+			System.out.println(server.liberaConexao(idCliente));
 		} catch (Exception e){
 			e.printStackTrace();
 		}

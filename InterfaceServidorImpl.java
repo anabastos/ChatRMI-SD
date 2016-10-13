@@ -7,6 +7,7 @@ public class InterfaceServidorImpl extends UnicastRemoteObject implements Interf
 	private InterfaceProc[] clientes = new InterfaceProc[idCliente];
 
 	public InterfaceServidorImpl() throws RemoteException {}
+	
 	public int estabeleceConexao() throws RemoteException{
 		try {
 			idCliente =+ 1;
