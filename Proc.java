@@ -12,7 +12,6 @@ import java.security.*;
 public class Proc
 {
 	public static void main(String arg[]){
-		System.setProperty("java.security.policy", "client.policy");
 		System.setSecurityManager(new RMISecurityManager());
 		int idCliente;
 		String msgDigitada;
@@ -20,7 +19,7 @@ public class Proc
 			InterfaceProcImpl cliente = new InterfaceProcImpl();
 			Naming.rebind("cliente", cliente);
 			
-			Remote referenciaRemota = Naming.lookup("servidor");
+			Remote referenciaRemota = Naming.lookup("rmi://localhost:2000/servidor");
 			InterfaceServidorImpl a = (InterfaceServidorImpl) referenciaRemota;
 			idCliente = a.estabeleceConexao();
 			System.out.println("Id Cliente:" + idCliente);
